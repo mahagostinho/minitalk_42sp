@@ -1,0 +1,7 @@
+.vscode
+./a.out
+*.o
+*.a
+server
+client
+/obj
