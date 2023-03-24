@@ -6,7 +6,7 @@
 /*   By: marcarva <marcarva@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:13:03 by marcarva          #+#    #+#             */
-/*   Updated: 2023/03/24 15:09:58 by marcarva         ###   ########.fr       */
+/*   Updated: 2023/03/24 18:08:10 by marcarva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,28 @@ void	error_message(char *message)
 
 void	print_message(int signal, siginfo_t *info, void *ucontext)
 {
+	static char	letter;
+	static int	shift;
+	
 	(void)ucontext;
-	if (signal == SIGUSR1) //there is message sended	
-	{	
-		ft_printf("Received\n");
-		//send signal to client asking for more
-		kill(info->si_pid, SIGUSR1);
+	if (signal == SIGUSR1)	
+		letter += (0b0000001 << shift);
+	if (shift == 7)
+	{
+		if (letter)
+			ft_putchar_fd(letter, 1);
+		else
+		{
+			if (kill(info->si_pid, SIGUSR2) != 0)
+				error_message("Failed to send signal!");
+		}
+		letter = 0;
+		shift = 0;
 	}
-	//else if SIGUSR2 was sended by the client means there is no message
-	kill(info->si_pid, SIGUSR2);
+	else
+		shift++;
+	if (kill(info->si_pid, SIGUSR1) != 0)
+		error_message("Failed to send signal!");	
 }
 
 int	main(void)
@@ -46,9 +59,6 @@ int	main(void)
 	server_sa.sa_sigaction = print_message;
 	process_id = getpid();
 	ft_printf("PID: %d\n", process_id);
-	/* Sigaction catch the signals sended by client (message)
-	SIGUSR1 means "Client sending things to you and 
-	SIGUSR2 means the message ended*/
 	if (sigaction(SIGUSR1, &server_sa, NULL) == -1)
 		error_message("Failed to set SIGUSR1");
 	if (sigaction(SIGUSR2, &server_sa, NULL) == -1)
