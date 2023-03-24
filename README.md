@@ -20,7 +20,7 @@ git clone https://github.com/mahagostinho/minitalk_42sp.git
 make
 ```
 
-### Open two instances of the command terminal and, in one of them, launch the `server` program
+## Open two instances of the command terminal and, in one of them, launch the `server` program
 
 ```html
 ./server
