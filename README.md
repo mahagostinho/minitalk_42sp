@@ -8,19 +8,19 @@ The `server` should be able to receive messages from clients in a row without ne
 
 ## How to compile and run the project
 
-### 1) Copy this repository to your local workstation
+### Copy this repository to your local workstation
 
 ```html
 git clone https://github.com/mahagostinho/minitalk_42sp.git
 ```
 
-### 2) Compile the project
+### Compile the project
 
 ```html
 make
 ```
 
-### 3) Open two instances of the command terminal and, in one of them, launch the `server` program
+### Open two instances of the command terminal and, in one of them, launch the `server` program
 
 ```html
 ./server
@@ -31,7 +31,7 @@ It will print the server process ID:
 ```html
 Server PID is: XXXX.
 ```
-### 4) In the other terminal, launch the `client` program
+### In the other terminal, launch the `client` program
 
 It must receive three arguments: the executable program, the server PID and the message to be sent.
 
