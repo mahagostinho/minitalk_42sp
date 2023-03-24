@@ -8,7 +8,11 @@ The `server` should be able to receive messages from clients in a row without ne
 
 ## How to compile and run the project
 
-### 1) Copy this repository to your local workstation using git clone
+### 1) Copy this repository to your local workstation
+
+```html
+git clone https://github.com/mahagostinho/minitalk_42sp.git
+```
 
 ### 2) Compile the project
 
