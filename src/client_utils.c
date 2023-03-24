@@ -5,12 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcarva <marcarva@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/24 11:31:55 by marcarva          #+#    #+#             */
-/*   Updated: 2023/03/24 11:32:28 by marcarva         ###   ########.fr       */
+/*   Created: 2023/03/24 19:35:48 by marcarva          #+#    #+#             */
+/*   Updated: 2023/03/24 20:09:28 by marcarva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minitalk.h"
+
+int	g_answer;
 
 void	error_message(char *message)
 {
@@ -18,25 +20,41 @@ void	error_message(char *message)
 	exit(EXIT_FAILURE);
 }
 
-int	process_id_is_digit(char *str_pid)
+void	check_message_received(int signal)
 {
-	int	i;
-
-	i = 0;
-	while (str_pid[i])
-	{
-		if (ft_isdigit(str_pid[i]))
-			i++;
-		else
-			return (0);
-	}
-	return (1);
+	if (signal == SIGUSR1)
+		g_answer = 0;
+	else if (signal == SIGUSR2)
+		ft_printf("Message sent with success!\n");
 }
 
-void	check_input(int argc, char **argv)
+void	send_signal(pid_t pid, int signal)
 {
-	if (argc != 3)
-		error_message("Error!\nUse: ./client <PID> <message>");
-	if ((!process_id_is_digit(argv[1])) && (ft_atoi(argv[1]) <= 0))
-		error_message("Invalid process ID!");
+	if (kill(pid, signal) != 0)
+		error_message("Failed to send signal!");
+}
+
+void	send_message(pid_t pid, char *message)
+{
+	size_t	index;
+	int		bits_counter;
+
+	index = -1;
+	while (++index <= ft_strlen(message))
+	{
+		bits_counter = 0;
+		while (bits_counter < 8)
+		{
+			if (g_answer == 0)
+			{
+				g_answer = 1;
+				if ((message[index] >> bits_counter) & 0b00000001)
+					send_signal(pid, SIGUSR1);
+				else
+					send_signal(pid, SIGUSR2);
+				bits_counter++;
+			}
+		}
+	}
+	usleep(100);
 }
