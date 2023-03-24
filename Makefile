@@ -12,7 +12,7 @@ HEADER = ./headers
 
 #Files
 SERVER_FILES = server.c 
-CLIENT_FILES = client.c 
+CLIENT_FILES = client.c client_utils.c 
 
 #all files .c with the path
 SERVER_SRC = $(addprefix $(SRC_PATH)/, $(SERVER_FILES))
