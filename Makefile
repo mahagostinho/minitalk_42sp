@@ -11,8 +11,8 @@ OBJ_PATH = ./obj
 HEADER = ./headers
 
 #Files
-SERVER_FILES = server.c
-CLIENT_FILES = client.c
+SERVER_FILES = server.c 
+CLIENT_FILES = client.c 
 
 #all files .c with the path
 SERVER_SRC = $(addprefix $(SRC_PATH)/, $(SERVER_FILES))
@@ -29,7 +29,7 @@ LIBFT = LIBFT_PATH/libft.a
 
 # Compilation
 CC = cc
-DEBUG = -g
+DEBUG = -g3
 CFLAGS = -Wall -Wextra -Werror $(DEBUG)
 LIB_FLAGS = -lft
 
@@ -69,5 +69,11 @@ fclean: clean
 	@echo "\033[00;35mClean all\033[00;37m"
 
 re: fclean all
+
+val:
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server
+
+norma: 
+	@norminette ./src ./headers
 
 .PHONY: all clean fclean re
