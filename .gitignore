@@ -3,6 +3,9 @@
 *.o
 *.a
 server
+server_bonus
 client
+client_bonus
 /obj
+/obj/bonus
 ignal
